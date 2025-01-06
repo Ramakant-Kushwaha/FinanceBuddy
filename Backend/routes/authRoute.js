@@ -58,7 +58,7 @@ router.get("/login", async (req, res) => {
   }
 });
 
-router.get("greet", (req, res) => {
+router.get("/greet", (req, res) => {
   res.status(200).json({ message: "Good Work" });
 });
 
