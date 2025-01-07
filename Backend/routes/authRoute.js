@@ -2,7 +2,7 @@ require("dotenv").config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const express = require("express");
-const User = require("../models/users");
+const Users = require("../models/users");
 
 const router = express.Router();
 
@@ -13,7 +13,7 @@ router.post("/signup", async (req, res) => {
 
   const securePassword = await bcrypt.hash(password, 12);
 
-  const user = new User({ password: securePassword, ...rest });
+  const user = new Users({ password: securePassword, ...rest });
 
   try {
     await user.save();
@@ -26,7 +26,11 @@ router.post("/signup", async (req, res) => {
 // User login
 router.get("/login", async (req, res) => {
   // Fetching user from db
-  const user = await User.findOne({ email: req.body.email });
+  const user = await Users.findOne({ email: req.body.email });
+
+  if (!user) {
+    res.status(401).json({ message: "User not found" });
+  }
 
   try {
     // Checking that  is a valid user
@@ -53,13 +57,6 @@ router.get("/login", async (req, res) => {
   } catch (error) {
     res.status(401).json({ message: "User not found" });
   }
-  if (!user) {
-    res.status(401).json({ message: "User not found" });
-  }
-});
-
-router.get("/greet", (req, res) => {
-  res.status(200).json({ message: "Good Work" });
 });
 
 module.exports = router;

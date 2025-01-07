@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const authRoute = require("./routes/authRoute");
+const expenseRoute = require("./routes/categoryRoute");
 require("./db/db");
 
 const app = express();
@@ -24,5 +25,6 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/user", authRoute);
+app.use("/api/expense", expenseRoute);
 
 module.exports = app;
