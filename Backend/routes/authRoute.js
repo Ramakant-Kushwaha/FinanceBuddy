@@ -24,22 +24,27 @@ router.post("/signup", async (req, res) => {
 });
 
 // User login
-router.get("/login", async (req, res) => {
+router.post("/login", async (req, res) => {
   // Fetching user from db
   const user = await Users.findOne({ email: req.body.email });
 
   if (!user) {
     res.status(401).json({ message: "User not found" });
+    return;
   }
 
   try {
     // Checking that  is a valid user
-    const fetchedUser = await bcrypt.compare(req.body.password, user.password);
+    const fetchedUser = await bcrypt.compare(
+      atob(req.body.password),
+      user.password
+    );
 
     if (fetchedUser) {
       // if not a valid user
       if (!user) {
         res.status(401).json({ message: "User not found" });
+        return;
       }
 
       //   if a valid user then generate token for it.
@@ -53,9 +58,11 @@ router.get("/login", async (req, res) => {
       });
     } else {
       res.status(401).json({ message: "User not found" });
+      return;
     }
   } catch (error) {
     res.status(401).json({ message: "User not found" });
+    return;
   }
 });
 
