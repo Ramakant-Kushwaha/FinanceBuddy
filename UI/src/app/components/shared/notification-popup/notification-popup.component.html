@@ -1,0 +1,17 @@
+<div class=" text-1xl md:text-2xl bg-transparent">
+    <div class="text-center py-1 md:px-8 md:h-10 px-4 h-8 rounded-xl" [ngClass]="{'bg-red-400': notificationType == NotificationTypes.error,
+      'bg-green-300': notificationType === NotificationTypes.success
+    }">
+        <ng-container [ngSwitch]="notificationType">
+            <ng-container *ngSwitchCase="NotificationTypes.error">
+                <span class="pr-3"><fa-icon [icon]="errorIcon"></fa-icon></span>
+                {{message}}
+            </ng-container>
+
+            <ng-container *ngSwitchCase="NotificationTypes.success">
+                <span class="pr-3"><fa-icon [icon]="thumbUpIcon"></fa-icon></span>
+                {{message}}
+            </ng-container>
+        </ng-container>
+    </div>
+</div>

@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { FormType } from '../enums/formType';
 import { LinkTextType } from '../types/LinkTextType';
 import { NgForm } from '@angular/forms';
@@ -10,6 +17,9 @@ import { NgForm } from '@angular/forms';
 })
 export class FormComponent implements OnInit {
   @Input() currentFormType: FormType = FormType.login;
+
+  @ViewChild('form') form: NgForm;
+
   public readonly FormTypes: typeof FormType = FormType;
 
   @Output() fromValues: EventEmitter<{ email: string; password: string }> =
@@ -31,6 +41,7 @@ export class FormComponent implements OnInit {
         ? FormType.signup
         : FormType.login;
     this.setupForm();
+    this.form.reset();
   }
 
   public setupForm() {
